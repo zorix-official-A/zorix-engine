@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zorix Engine</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <div class="brand">
+          <span class="mark">Z</span>
+          <div>
+            <strong>Zorix Engine</strong>
+            <small>ZorixScript · Runtime · WebGL</small>
+          </div>
+        </div>
+        <nav class="menus">
+          <button>File</button><button>Edit</button><button>Assets</button><button>ZorixObject</button><button>ZorixScript</button><button>Window</button>
+        </nav>
+        <div class="toolbar">
+          <button id="tool-select" class="tool active" title="Select">↖</button>
+          <button id="tool-move" class="tool" title="Move">↔</button>
+          <button id="tool-rotate" class="tool" title="Rotate">⟳</button>
+          <button id="tool-scale" class="tool" title="Scale">□</button>
+          <span class="divider"></span>
+          <select id="quick-create" title="Create object">
+            <option value="">Create...</option>
+            <option value="cube">Cube</option>
+            <option value="sphere">Sphere</option>
+            <option value="capsule">Capsule</option>
+            <option value="cylinder">Cylinder</option>
+            <option value="cone">Cone</option>
+            <option value="torus">Torus</option>
+            <option value="ico">Ico Sphere</option>
+            <option value="dodeca">Dodeca</option>
+            <option value="ring">Ring</option>
+            <option value="wall">Wall</option>
+            <option value="ramp">Ramp</option>
+            <option value="stairs">Stairs</option>
+            <option value="tree">Tree</option>
+            <option value="rock">Rock</option>
+            <option value="crate">Crate</option>
+            <option value="vehicle">Vehicle Blockout</option>
+            <option value="house">House</option>
+            <option value="tower">Tower</option>
+            <option value="bridge">Bridge</option>
+            <option value="coin">Coin</option>
+            <option value="enemy">Enemy</option>
+            <option value="platform">Platform</option>
+            <option value="portal">Portal</option>
+            <option value="terrain">Terrain</option>
+            <option value="water">Water</option>
+            <option value="particles">Particles</option>
+            <option value="pointLight">Point Light</option>
+            <option value="spotLight">Spot Light</option>
+            <option value="camera">Camera Marker</option>
+          </select>
+          <select id="quality" title="Render quality">
+            <option value="ultra">Ultra</option>
+            <option value="high">High</option>
+            <option value="balanced">Balanced</option>
+            <option value="low">Low</option>
+          </select>
+          <button id="import-sky">Sky Image</button>
+          <button id="import-glb">Import GLB</button>
+          <span class="divider"></span>
+          <button id="play" class="play">▶ Play</button>
+          <button id="pause">Ⅱ</button>
+          <button id="stop">■</button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <aside class="panel hierarchy">
+          <div class="panel-title">
+            <span>Hierarchy</span>
+            <button id="add-object">＋</button>
+          </div>
+          <div id="hierarchy-list" class="tree"></div>
+        </aside>
+
+        <section class="center">
+          <div class="tabs">
+            <button class="tab active" data-view="scene">Scene</button>
+            <button class="tab" data-view="game">Game</button>
+            <button class="tab" data-view="profiler">Profiler</button>
+          </div>
+          <div class="viewport-wrap">
+            <canvas id="viewport"></canvas>
+            <div class="gizmo">
+              <span class="x">X</span><span class="y">Y</span><span class="z">Z</span>
+            </div>
+            <div id="runtime-banner" class="runtime-banner hidden">Zorix runtime running</div>
+            <div id="made-badge" class="made-badge">Made by Zorix Engine</div>
+            <div id="ui-layer" class="ui-layer"></div>
+          </div>
+          <section class="bottom panel">
+            <div class="tabs mini">
+              <button class="tab active" data-bottom="assets">Project</button>
+              <button class="tab" data-bottom="console">Console</button>
+              <button class="tab" data-bottom="animator">Animator</button>
+              <button class="tab" data-bottom="physics">Physics</button>
+              <button class="tab" data-bottom="lighting">Lighting</button>
+              <button class="tab" data-bottom="ui">UI Designer</button>
+              <button class="tab" data-bottom="build">Build</button>
+              <button class="tab" data-bottom="docs">ZorixScript Docs</button>
+            </div>
+            <div class="asset-grid" id="asset-grid"></div>
+            <div class="console hidden" id="console"></div>
+            <div class="module-panel hidden" id="module-panel"></div>
+          </section>
+        </section>
+
+        <aside class="panel inspector">
+          <div class="panel-title">
+            <span>Inspector</span>
+            <button id="duplicate">Duplicate</button>
+          </div>
+          <div id="inspector"></div>
+        </aside>
+      </main>
+      <footer class="statusbar">
+        <span id="status-left">Zorix Engine ready</span>
+        <span>Renderer: WebGL · Script: ZorixScript · Package: full content edition</span>
+      </footer>
+    </div>
+    <div id="project-modal" class="project-modal">
+      <div class="project-card">
+        <h1>Create Zorix Project</h1>
+        <p>Choose a project type. You can still create 2D, 3D and UI objects later.</p>
+        <label>Project Name<input id="project-name" value="My Zorix Game" /></label>
+        <div class="project-options">
+          <button data-project-type="3d"><b>3D Game</b><span>Meshes, lights, materials, GLB import</span></button>
+          <button data-project-type="2d"><b>2D Game</b><span>Orthographic camera, sprites, platforms</span></button>
+          <button data-project-type="ui"><b>UI App / PWA</b><span>Buttons, text, panels, installable export</span></button>
+        </div>
+        <button id="open-existing">Open Current Scene</button>
+      </div>
+    </div>
+    <input id="sky-file" type="file" accept="image/*" hidden />
+    <input id="glb-file" type="file" accept=".glb,.gltf,model/gltf-binary,model/gltf+json" hidden />
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

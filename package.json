@@ -1,0 +1,11 @@
+{
+  "name": "zorix-engine",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Zorix Engine browser 3D editor with ZorixScript, local Three.js modules, GLB import and sky image import.",
+  "type": "module",
+  "scripts": {
+    "start": "python3 -m http.server 8080",
+    "serve": "python3 -m http.server 8080"
+  }
+}
